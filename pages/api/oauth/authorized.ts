@@ -61,12 +61,12 @@ export default async function OAuthAuthorizedApi(req: NextApiRequest, res: NextA
     Date.now() + TOKEN_VALIDITY_PERIOD,
   );
   // 변경
-  const html = `<!DOCTYPE html>
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).send(`<!DOCTYPE html>
 <html>
 <head><script>
   const token = ${JSON.stringify(session)};
   const returnUrl = ${JSON.stringify(returnUrl.href)};
-  // 부모 탭의 localStorage에 저장
   if (window.opener) {
     window.opener.localStorage.setItem('giscus_token', token);
     window.close();
@@ -76,5 +76,5 @@ export default async function OAuthAuthorizedApi(req: NextApiRequest, res: NextA
   }
 </script></head>
 <body></body>
-</html>`;
+</html>`);
 }
