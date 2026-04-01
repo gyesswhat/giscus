@@ -60,7 +60,23 @@ export default async function OAuthAuthorizedApi(req: NextApiRequest, res: NextA
     encryption_password,
     Date.now() + TOKEN_VALIDITY_PERIOD,
   );
-  returnUrl.searchParams.set('giscus', session);
-
-  res.redirect(302, returnUrl.href);
+  // 변경
+  const html = `<!DOCTYPE html>
+<html>
+<head><script>
+  const token = ${JSON.stringify(session)};
+  const origin = ${JSON.stringify(returnUrl.origin)};
+  if (window.opener) {
+    window.opener.postMessage({ giscus: { token } }, origin);
+    window.close();
+  } else {
+    const url = new URL(${JSON.stringify(returnUrl.href)});
+    url.searchParams.set('giscus', token);
+    location.href = url.href;
+  }
+</script></head>
+<body></body>
+</html>`;
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).send(html);
 }
