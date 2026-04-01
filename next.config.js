@@ -55,15 +55,6 @@ const config = withBundleAnalyzer(
             headers: securityHeaders,
           },
           {
-            source: '/',
-            headers: [
-              {
-                key: 'X-Frame-Options',
-                value: 'SAMEORIGIN',
-              },
-            ],
-          },
-          {
             source: '/(themes/(?:.*)|client\\.js)',
             headers: [
               {
