@@ -39,7 +39,7 @@ const securityHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: `frame-ancestors 'self';`,
+    value: "frame-ancestors 'self' https://log.gyesswhat.dev",
   },
 ];
 
