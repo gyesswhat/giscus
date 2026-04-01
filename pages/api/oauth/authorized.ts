@@ -65,18 +65,16 @@ export default async function OAuthAuthorizedApi(req: NextApiRequest, res: NextA
 <html>
 <head><script>
   const token = ${JSON.stringify(session)};
-  const origin = ${JSON.stringify(returnUrl.origin)};
+  const returnUrl = ${JSON.stringify(returnUrl.href)};
+  // 부모 탭의 localStorage에 저장
   if (window.opener) {
-    window.opener.postMessage({ giscus: { token } }, origin);
+    window.opener.localStorage.setItem('giscus_token', token);
     window.close();
   } else {
-    const url = new URL(${JSON.stringify(returnUrl.href)});
-    url.searchParams.set('giscus', token);
-    location.href = url.href;
+    localStorage.setItem('giscus_token', token);
+    location.href = returnUrl;
   }
 </script></head>
 <body></body>
 </html>`;
-  res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(html);
 }
